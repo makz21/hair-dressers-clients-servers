@@ -53,7 +53,7 @@ public class HairDressersServer {
                 outputStreams.add(writer);
                 Thread t = new Thread(new HandlingClient(clientSocket));
                 t.start();
-                System.out.println("connection");
+                System.out.println("Client connected");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
