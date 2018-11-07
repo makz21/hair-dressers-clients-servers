@@ -1,6 +1,4 @@
 package pl.makz.hdsalon.client;
 
-public class hairDressersClient {
-
-
+public class HairDressersClient {
 }
