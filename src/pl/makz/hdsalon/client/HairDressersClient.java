@@ -8,29 +8,31 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 public class HairDressersClient {
-    BufferedReader reader;
-    PrintWriter writer;
-    Socket socket;
-    String message;
-
+    private BufferedReader reader;
+    private PrintWriter writer;
+    private Socket socket;
+    private String message;
+    private boolean closed = false;
+    private BufferedReader readerCmd = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) {
         HairDressersClient client = new HairDressersClient();
         client.startClient();
     }
 
-    public void startClient() {
+    private void startClient() {
         configureCommunicationWithServer();
         Thread thread = new Thread(new MessageReceiver());
         thread.start();
-        try{
-            message = reader.readLine();
-            writer.println(message);
-            writer.flush();
-        }catch (Exception ex){
+        try {
+            while (!closed) {
+                message = readerCmd.readLine();
+                writer.println(message);
+                writer.flush();
+            }
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 
     private void configureCommunicationWithServer() {
@@ -54,6 +56,7 @@ public class HairDressersClient {
             try {
                 while ((wiadom = reader.readLine()) != null) {
                     System.out.println("Odczytano z serwera: " + wiadom);
+                    closed = true;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
