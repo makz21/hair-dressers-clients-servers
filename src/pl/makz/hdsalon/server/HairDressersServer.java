@@ -45,6 +45,8 @@ public class HairDressersServer {
 
     public void startServer() {
         outputStreams = new ArrayList();
+        HairDressersSalonTimetable ttUtil = new HairDressersSalonTimetable();
+        //sendToAll(ttUtil.printTimetable());
         try {
             ServerSocket serverSock = new ServerSocket(5000);
             while (true) {
@@ -54,6 +56,8 @@ public class HairDressersServer {
                 Thread t = new Thread(new HandlingClient(clientSocket));
                 t.start();
                 System.out.println("Client connected");
+                System.out.println(outputStreams);
+                // sendToAll(ttUtil.printTimetable());
             }
         } catch (Exception ex) {
             ex.printStackTrace();

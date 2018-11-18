@@ -42,7 +42,7 @@ public class HairDressersClient {
             InputStreamReader reader1 = new InputStreamReader(socket.getInputStream());
             reader = new BufferedReader(reader1);
             writer = new PrintWriter(socket.getOutputStream());
-            System.out.println("connection is ready");
+            System.out.println("Connected to Hair Dresser's Salon Application");
 
         } catch (IOException e) {
             e.printStackTrace();
