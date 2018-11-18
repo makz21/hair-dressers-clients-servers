@@ -10,12 +10,13 @@ import java.util.Iterator;
 
 public class HairDressersServer {
     ArrayList outputStreams;
+    HairDressersSalonTimetable ttUtil = new HairDressersSalonTimetable();
 
     public class HandlingClient implements Runnable {
         BufferedReader reader;
         Socket socket;
 
-        public HandlingClient(Socket clientSocket) {
+        private HandlingClient(Socket clientSocket) {
             try {
                 socket = clientSocket;
                 InputStreamReader isReader = new InputStreamReader(socket.getInputStream());
@@ -30,8 +31,8 @@ public class HairDressersServer {
             String message;
             try {
                 while ((message = reader.readLine()) != null) {
-                    System.out.println(message);
-                    sendToAll(message);
+                    System.out.println("Client message:" + message);
+                    //sendToAll(message);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -43,9 +44,9 @@ public class HairDressersServer {
         new HairDressersServer().startServer();
     }
 
-    public void startServer() {
+    private void startServer() {
+
         outputStreams = new ArrayList();
-        HairDressersSalonTimetable ttUtil = new HairDressersSalonTimetable();
         //sendToAll(ttUtil.printTimetable());
         try {
             ServerSocket serverSock = new ServerSocket(5000);
@@ -53,18 +54,21 @@ public class HairDressersServer {
                 Socket clientSocket = serverSock.accept();
                 PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
                 outputStreams.add(writer);
+                writer.println(welcomeInformationAndMenu());
+                writer.flush();
                 Thread t = new Thread(new HandlingClient(clientSocket));
                 t.start();
                 System.out.println("Client connected");
                 System.out.println(outputStreams);
-                // sendToAll(ttUtil.printTimetable());
+                //sendToAll(ttUtil.printTimetable());
+                //sendToAll(welcomeInformationAndMenu());
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public void sendToAll(String message) {
+    private void sendToAll(String message) {
         Iterator it = outputStreams.iterator();
         while (it.hasNext()) {
             try {
@@ -76,6 +80,20 @@ public class HairDressersServer {
             }
         }
     }
+
+    private String welcomeInformationAndMenu() {
+        String welcomeInformationAndMenu;
+        welcomeInformationAndMenu = "Welcome to the hairdresser's salon booking app\n" +
+                "choose the option that interests you:\n" +
+                "1 - view the schedule\n" +
+                "2 - book the date of the visit\n" +
+                "3 - cancel the date of the visit\n" +
+                "4 - close applications";
+
+        return welcomeInformationAndMenu;
+    }
+
+
 }
 
 

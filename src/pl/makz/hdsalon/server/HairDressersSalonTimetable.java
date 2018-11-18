@@ -8,13 +8,13 @@ public class HairDressersSalonTimetable {
     public Map<Integer, String> timetable = new HashMap<>();
 
     public HairDressersSalonTimetable() {
-        timetable.put(10, "dd");
+        timetable.put(10, "Wolny Termin");
         timetable.put(11, "Wolny Termin");
         timetable.put(12, "Wolny Termin");
         timetable.put(13, "Wolny Termin");
         timetable.put(14, "Wolny Termin");
         timetable.put(15, "Wolny Termin");
-        timetable.put(16, "dd");
+        timetable.put(16, "Wolny Termin");
         timetable.put(17, "Wolny Termin");
         timetable.put(18, "Wolny Termin");
     }

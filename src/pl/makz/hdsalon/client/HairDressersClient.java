@@ -42,7 +42,8 @@ public class HairDressersClient {
             InputStreamReader reader1 = new InputStreamReader(socket.getInputStream());
             reader = new BufferedReader(reader1);
             writer = new PrintWriter(socket.getOutputStream());
-            System.out.println("Connected to Hair Dresser's Salon Application");
+            System.out.println("Connected to Hair Dresser's Salon Application\n" +
+                    "----------------------------------------------");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,7 +57,7 @@ public class HairDressersClient {
             try {
                 while ((wiadom = reader.readLine()) != null) {
                     System.out.println("Odczytano z serwera: " + wiadom);
-                    closed = true;
+                    //closed = true;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
