@@ -1,10 +1,12 @@
 package pl.makz.hdsalon.server;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -45,6 +47,24 @@ public class HairDressersServer {
                             writer.println(ttUtil.printTimetable());
                             writer.flush();
                             break;
+                        case "2":
+                            writer.println("wybierz godzine");
+                            writer.flush();
+                            String hour = reader.readLine();
+                            writer.println("Podaj imie i nazwisko");
+                            writer.flush();
+                            String name = reader.readLine();
+                            ttUtil.bookTheDate(hour, name);
+                            //sendToAll(ttUtil.printTimetable());
+                            break;
+                        case "4":
+                            outputStreams.remove(getClientId());
+                            reader.close();
+                            client.socket.close();
+                            break;
+                        default:
+                            writer.println("Invalid input");
+                            writer.flush();
                     }
 
 
@@ -53,9 +73,12 @@ public class HairDressersServer {
 
                     System.out.println(outputStreams.get(getClientId()));
 
+
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (SocketException ex) {
+                System.out.println("zerwane połączenie");
+            } catch (IOException ex) {
+                System.out.println("closed streams");
             }
         }
 

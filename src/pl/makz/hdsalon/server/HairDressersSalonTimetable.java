@@ -39,5 +39,13 @@ public class HairDressersSalonTimetable {
         return terminarz;
     }
 
+    public void bookTheDate(String hour, String name) {
+        int key = Integer.parseInt(hour);
+        if (timetable.get(key) == "Wolny Termin") {
+            timetable.replace(key, name);
+        } else {
+            System.out.println("zajęty termin");
+        }
 
+    }
 }
