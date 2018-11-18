@@ -33,10 +33,11 @@ public class HairDressersSalonTimetable {
 
         for (int i = 10; i < 19; i++) {
             if (timetable.get(i) == "Wolny Termin") {
-                terminarz += i + " " + timetable.get(i) + "\n";
+                terminarz += i + ":00 " + timetable.get(i) + "\n";
             }
         }
         return terminarz;
     }
+
 
 }

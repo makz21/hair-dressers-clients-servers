@@ -10,33 +10,57 @@ import java.util.Iterator;
 
 public class HairDressersServer {
     ArrayList outputStreams;
+    HandlingClient client;
     HairDressersSalonTimetable ttUtil = new HairDressersSalonTimetable();
+    static int i;
 
     public class HandlingClient implements Runnable {
         BufferedReader reader;
         Socket socket;
+        int clientId;
 
-        private HandlingClient(Socket clientSocket) {
+        private HandlingClient(Socket clientSocket, int clientId) {
+            this.clientId = clientId;
             try {
                 socket = clientSocket;
                 InputStreamReader isReader = new InputStreamReader(socket.getInputStream());
                 reader = new BufferedReader(isReader);
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
 
         }
 
         public void run() {
+            PrintWriter writer;
             String message;
             try {
                 while ((message = reader.readLine()) != null) {
                     System.out.println("Client message:" + message);
-                    //sendToAll(message);
+                    writer = (PrintWriter) outputStreams.get(getClientId());
+                    switch (message) {
+                        case "1":
+                            writer.println(ttUtil.printTimetable());
+                            writer.flush();
+                            break;
+                    }
+
+
+                    // writer.println(message);
+                    // writer.flush();
+
+                    System.out.println(outputStreams.get(getClientId()));
+
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+
+        public int getClientId() {
+            return clientId;
         }
     }
 
@@ -53,13 +77,16 @@ public class HairDressersServer {
             while (true) {
                 Socket clientSocket = serverSock.accept();
                 PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+                client = new HandlingClient(clientSocket, i);
                 outputStreams.add(writer);
                 writer.println(welcomeInformationAndMenu());
                 writer.flush();
-                Thread t = new Thread(new HandlingClient(clientSocket));
+                Thread t = new Thread(client);
                 t.start();
+                i++;
                 System.out.println("Client connected");
                 System.out.println(outputStreams);
+                // System.out.println(outputStreams.get(client.getClientId()));
                 //sendToAll(ttUtil.printTimetable());
                 //sendToAll(welcomeInformationAndMenu());
             }
