@@ -33,7 +33,7 @@ public class HairDressersSalonTimetable {
         String terminarz = "";
 
         for (int i = 10; i < 19; i++) {
-            if (timetable.get(i) == "Wolny Termin") {
+            if (timetable.get(i).equals("Wolny Termin")) {
                 terminarz += i + ":00 " + timetable.get(i) + "\n";
             }
         }
