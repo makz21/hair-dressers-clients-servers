@@ -38,6 +38,8 @@ public class HairDressersServer {
         public void run() {
             PrintWriter writer;
             String message;
+            String name;
+            String hour;
             try {
                 while ((message = reader.readLine()) != null) {
                     System.out.println("Client message:" + message);
@@ -50,15 +52,29 @@ public class HairDressersServer {
                         case "2":
                             writer.println("wybierz godzine");
                             writer.flush();
-                            String hour = reader.readLine();
+                            hour = reader.readLine();
                             writer.println("Podaj imie i nazwisko");
                             writer.flush();
-                            String name = reader.readLine();
-                            ttUtil.bookTheDate(hour, name);
+                            name = reader.readLine();
+                            if (ttUtil.bookTheDate(hour, name)) {
+                                sendToAll("***Własnie dokonano rezerwacji na godzine: " + hour + ":00***");
+                            }
+                            //System.out.println(hour + " " + name);
                             //sendToAll(ttUtil.printTimetable());
                             break;
+                        case "3":
+                            writer.println("Podaj godzine");
+                            writer.flush();
+                            hour = reader.readLine();
+                            writer.println("Podaj imie i nazwisko");
+                            writer.flush();
+                            name = reader.readLine();
+                            if (ttUtil.cancelTheDate(hour, name)) {
+                                sendToAll("***Własnie anulowano rezerwacje na godzine: " + hour + ":00***");
+
+                            }
                         case "4":
-                            outputStreams.remove(getClientId());
+                            //outputStreams.remove(getClientId());
                             reader.close();
                             client.socket.close();
                             break;
@@ -66,15 +82,13 @@ public class HairDressersServer {
                             writer.println("Invalid input");
                             writer.flush();
                     }
-
-
                     // writer.println(message);
                     // writer.flush();
 
                     System.out.println(outputStreams.get(getClientId()));
-
-
                 }
+            } catch (IndexOutOfBoundsException ec) {
+                System.out.println("usunięto klienta");
             } catch (SocketException ex) {
                 System.out.println("zerwane połączenie");
             } catch (IOException ex) {

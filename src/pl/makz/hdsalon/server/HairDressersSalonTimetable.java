@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HairDressersSalonTimetable {
+    private String wolnyTermin = "Wolny Termin";
     public Map<Integer, String> timetable = new HashMap<>();
 
     public HairDressersSalonTimetable() {
@@ -39,13 +40,29 @@ public class HairDressersSalonTimetable {
         return terminarz;
     }
 
-    public void bookTheDate(String hour, String name) {
+    public boolean bookTheDate(String hour, String name) {
+        boolean flag;
         int key = Integer.parseInt(hour);
-        if (timetable.get(key) == "Wolny Termin") {
+        if (timetable.get(key).equals("Wolny Termin")) {
             timetable.replace(key, name);
+            flag = true;
         } else {
             System.out.println("zajęty termin");
+            flag = false;
         }
+        return flag;
+    }
 
+    public boolean cancelTheDate(String hour, String name) {
+        boolean flag;
+        int key = Integer.parseInt(hour);
+        if (timetable.get(key).equalsIgnoreCase(name)) {
+            timetable.replace(key, wolnyTermin);
+            flag = true;
+        } else {
+            System.out.println("nie udało sie usunac");
+            flag = false;
+        }
+        return flag;
     }
 }
