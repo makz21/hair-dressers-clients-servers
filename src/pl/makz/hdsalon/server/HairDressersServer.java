@@ -8,7 +8,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class HairDressersServer {
     ArrayList outputStreams;
@@ -57,7 +56,10 @@ public class HairDressersServer {
                             writer.flush();
                             name = reader.readLine();
                             if (ttUtil.bookTheDate(hour, name)) {
-                                sendToAll("***Własnie dokonano rezerwacji na godzine: " + hour + ":00***");
+                                sendToAll("\n*** Własnie dokonano rezerwacji na godzine: " + hour + ":00 ***\n");
+                            } else {
+                                writer.println("Nie udało się zarezerwowa terminu - termin zajęty\n");
+                                writer.flush();
                             }
                             //System.out.println(hour + " " + name);
                             //sendToAll(ttUtil.printTimetable());
@@ -70,25 +72,24 @@ public class HairDressersServer {
                             writer.flush();
                             name = reader.readLine();
                             if (ttUtil.cancelTheDate(hour, name)) {
-                                sendToAll("***Własnie anulowano rezerwacje na godzine: " + hour + ":00***");
-
+                                sendToAll("\n *** Własnie anulowano rezerwacje na godzine: " + hour + ":00 ***\n");
+                            } else {
+                                writer.println("Nie udało się odwołac terminu - sprawdz porpawnosc danych\n");
+                                writer.flush();
                             }
                         case "4":
-                            //outputStreams.remove(getClientId());
-                            reader.close();
-                            client.socket.close();
+//                            outputStreams.remove(getClientId());
+//                            reader.close();
+//                            client.socket.close();
                             break;
                         default:
                             writer.println("Invalid input");
                             writer.flush();
                     }
-                    // writer.println(message);
-                    // writer.flush();
-
                     System.out.println(outputStreams.get(getClientId()));
                 }
             } catch (IndexOutOfBoundsException ec) {
-                System.out.println("usunięto klienta");
+                System.out.println("");
             } catch (SocketException ex) {
                 System.out.println("zerwane połączenie");
             } catch (IOException ex) {
@@ -106,9 +107,8 @@ public class HairDressersServer {
     }
 
     private void startServer() {
-
         outputStreams = new ArrayList();
-        //sendToAll(ttUtil.printTimetable());
+        //
         try {
             ServerSocket serverSock = new ServerSocket(5000);
             while (true) {
@@ -133,10 +133,9 @@ public class HairDressersServer {
     }
 
     private void sendToAll(String message) {
-        Iterator it = outputStreams.iterator();
-        while (it.hasNext()) {
+        for (Object outputStream : outputStreams) {
             try {
-                PrintWriter writer = (PrintWriter) it.next();
+                PrintWriter writer = (PrintWriter) outputStream;
                 writer.println(message);
                 writer.flush();
             } catch (Exception ex) {
@@ -147,7 +146,7 @@ public class HairDressersServer {
 
     private String welcomeInformationAndMenu() {
         String welcomeInformationAndMenu;
-        welcomeInformationAndMenu = "Welcome to the hairdresser's salon booking app\n" +
+        welcomeInformationAndMenu = "\n Welcome to the hairdresser's salon booking app\n" +
                 "choose the option that interests you:\n" +
                 "1 - view the schedule\n" +
                 "2 - book the date of the visit\n" +
