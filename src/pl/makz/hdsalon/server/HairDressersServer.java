@@ -56,13 +56,11 @@ public class HairDressersServer {
                             writer.flush();
                             name = reader.readLine();
                             if (ttUtil.bookTheDate(hour, name)) {
-                                sendToAll("\n*** Własnie dokonano rezerwacji na godzine: " + hour + ":00 ***\n");
+                                sendToAll("!!! Własnie dokonano rezerwacji na godzine: " + hour + ":00 ***\n");
                             } else {
                                 writer.println("Nie udało się zarezerwowa terminu - termin zajęty\n");
                                 writer.flush();
                             }
-                            //System.out.println(hour + " " + name);
-                            //sendToAll(ttUtil.printTimetable());
                             break;
                         case "3":
                             writer.println("Podaj godzine");
@@ -72,7 +70,7 @@ public class HairDressersServer {
                             writer.flush();
                             name = reader.readLine();
                             if (ttUtil.cancelTheDate(hour, name)) {
-                                sendToAll("\n *** Własnie anulowano rezerwacje na godzine: " + hour + ":00 ***\n");
+                                sendToAll("!!! Własnie anulowano rezerwacje na godzine: " + hour + ":00 ***\n");
                             } else {
                                 writer.println("Nie udało się odwołac terminu - sprawdz porpawnosc danych\n");
                                 writer.flush();
@@ -123,9 +121,7 @@ public class HairDressersServer {
                 i++;
                 System.out.println("Client connected");
                 System.out.println(outputStreams);
-                // System.out.println(outputStreams.get(client.getClientId()));
-                //sendToAll(ttUtil.printTimetable());
-                //sendToAll(welcomeInformationAndMenu());
+
             }
         } catch (Exception ex) {
             ex.printStackTrace();

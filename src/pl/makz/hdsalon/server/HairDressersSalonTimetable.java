@@ -9,15 +9,15 @@ public class HairDressersSalonTimetable {
     public Map<Integer, String> timetable = new HashMap<>();
 
     public HairDressersSalonTimetable() {
-        timetable.put(10, "Wolny Termin");
-        timetable.put(11, "Wolny Termin");
-        timetable.put(12, "Wolny Termin");
-        timetable.put(13, "Wolny Termin");
-        timetable.put(14, "Wolny Termin");
-        timetable.put(15, "Wolny Termin");
-        timetable.put(16, "Wolny Termin");
-        timetable.put(17, "Wolny Termin");
-        timetable.put(18, "Wolny Termin");
+        timetable.put(10, wolnyTermin);
+        timetable.put(11, wolnyTermin);
+        timetable.put(12, wolnyTermin);
+        timetable.put(13, wolnyTermin);
+        timetable.put(14, wolnyTermin);
+        timetable.put(15, wolnyTermin);
+        timetable.put(16, wolnyTermin);
+        timetable.put(17, wolnyTermin);
+        timetable.put(18, wolnyTermin);
     }
 
     public Object getKeyFromValue(String value) {
@@ -33,7 +33,7 @@ public class HairDressersSalonTimetable {
         String terminarz = "";
 
         for (int i = 10; i < 19; i++) {
-            if (timetable.get(i).equals("Wolny Termin")) {
+            if (timetable.get(i).equals(wolnyTermin)) {
                 terminarz += i + ":00 " + timetable.get(i) + "\n";
             }
         }
@@ -43,7 +43,7 @@ public class HairDressersSalonTimetable {
     public boolean bookTheDate(String hour, String name) {
         boolean flag;
         int key = Integer.parseInt(hour);
-        if (timetable.get(key).equals("Wolny Termin")) {
+        if (timetable.get(key).equals(wolnyTermin)) {
             timetable.replace(key, name);
             flag = true;
         } else {
